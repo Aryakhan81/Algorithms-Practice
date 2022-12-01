@@ -11,6 +11,9 @@ class Tree {
         Tree(Tree* l, Tree* r);
         Tree(Tree* l, Tree* r, string name);
         ~Tree();
+
+        bool isIsomorphic(Tree* other) const;
+
         Tree* left;
         Tree* right;
         string label;
@@ -49,11 +52,27 @@ Tree::~Tree() {
     delete this->right;
 }
 
+bool Tree::isIsomorphic(Tree* other) const {
+    if(other == nullptr) return false;
+    if((this->left == nullptr && other->left == nullptr) && this->right == nullptr && other->right == nullptr) return true;
+    if((this->left != nullptr && other->left == nullptr) || (this->left == nullptr && other->left != nullptr)) return false;
+    if((this->right != nullptr && other->right == nullptr) || (this->right == nullptr && other->right != nullptr)) return false;
+    if(this->left != nullptr && other->left != nullptr)
+        if(!(this->left)->isIsomorphic(other->left)) return false;
+    if(this->right != nullptr && other->right != nullptr)
+        if(!(this->right)->isIsomorphic(other->right)) return false;
+    return true;
+}
+
 int main() {
     Tree t = Tree("A");
     t.left = new Tree("B");
     t.right = new Tree("C");
-    t.right->right = new Tree();
-    cout << t.right->right->label << endl;
+    t.right->right = new Tree("D");
+    Tree u = Tree("E");
+    u.left = new Tree("F");
+    u.right = new Tree("G");
+    u.right->right = new Tree("H");
+    cout << t.isIsomorphic(t.right) << endl;
     return 0;
 }
