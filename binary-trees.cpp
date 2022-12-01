@@ -13,6 +13,8 @@ class Tree {
         ~Tree();
 
         bool isIsomorphic(Tree* other) const;
+        int numVertices() const;
+        int numLeaves() const;
 
         Tree* left;
         Tree* right;
@@ -64,15 +66,32 @@ bool Tree::isIsomorphic(Tree* other) const {
     return true;
 }
 
+int Tree::numVertices() const {
+    int numVertices = 1;
+    if(this->left != nullptr) numVertices += this->left->numVertices();
+    if(this->right != nullptr) numVertices += this->right->numVertices();
+    return numVertices;
+}
+
+int Tree::numLeaves() const {
+    if(this->left == nullptr && this->right == nullptr) return 1;
+    else return (this->left == nullptr ? 0 : this->left->numLeaves()) + (this->right == nullptr ? 0 : this->right->numLeaves());
+}
+
 int main() {
-    Tree t = Tree("A");
-    t.left = new Tree("B");
-    t.right = new Tree("C");
-    t.right->right = new Tree("D");
-    Tree u = Tree("E");
-    u.left = new Tree("F");
-    u.right = new Tree("G");
-    u.right->right = new Tree("H");
-    cout << t.isIsomorphic(t.right) << endl;
+    Tree* t = new Tree("A");
+    t->left = new Tree("B");
+    t->right = new Tree("C");
+    t->right->right = new Tree("D");
+    Tree* u = new Tree("E");
+    u->left = new Tree("F");
+    u->right = new Tree("G");
+    u->right->right = new Tree("H");
+    t->right->left = new Tree(u, nullptr, "lolz");
+    cout << u->left->isIsomorphic(t->right->left->left->left) << endl;
+    cout << t->numVertices() << endl;
+    cout << u->numLeaves() << endl;
+    cout << t->numLeaves() << endl;
+    delete t;
     return 0;
 }
