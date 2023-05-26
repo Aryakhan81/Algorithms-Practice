@@ -6,6 +6,7 @@ using namespace std;
 
 class Tree {
     public:
+        void init(Tree* l, Tree* r, string name);
         Tree();
         Tree(string name);
         Tree(Tree* l, Tree* r);
@@ -21,32 +22,32 @@ class Tree {
         string label;
 };
 
+// Initialize all values, used from constructors
+void Tree::init(Tree* l, Tree* r, string name) {
+    this->left = l;
+    this->right = r;
+    this->label = name;
+}
+
 Tree::Tree() {
-    this->left = nullptr;
-    this->right = nullptr;
     ostringstream oss;
     oss << this;
-    this->label = "Tree@" + oss.str();
+    this->init(nullptr, nullptr, "Tree@" + oss.str());
+    
 }
 
 Tree::Tree(string name) {
-    this->left = nullptr;
-    this->right = nullptr;
-    this->label = name;
+    this->init(nullptr, nullptr, name);
 }
 
 Tree::Tree(Tree* l, Tree* r) {
-    this->left = l;
-    this->right = r;
     ostringstream oss;
     oss << this;
-    this->label = "Tree@" + oss.str();
+    this->init(l, r, "Tree@" + oss.str());
 }
 
 Tree::Tree(Tree* l, Tree* r, string name) {
-    this->left = l;
-    this->right = r;
-    this->label = name;
+    this->init(l, r, name);
 }
 
 Tree::~Tree() {
@@ -88,6 +89,7 @@ int main() {
     u->right = new Tree("G");
     u->right->right = new Tree("H");
     t->right->left = new Tree(u, nullptr, "lolz");
+    t->right->left->right = new Tree(nullptr, nullptr, "helo");
     cout << u->left->isIsomorphic(t->right->left->left->left) << endl;
     cout << t->numVertices() << endl;
     cout << u->numLeaves() << endl;

@@ -1,0 +1,9 @@
+# Ignore all
+*
+
+# Unignore all files with extensions (no executables)
+!*.*
+
+# Ignore machine-specific files
+.DS_Store
+*.dSYM
